@@ -27,11 +27,10 @@ class CreateUserService {
                 throw new AppError_1.default('Email address already used.');
             }
             const hashedPassword = yield (0, bcryptjs_1.hash)(password, 8);
-            const user = usersRepository.create({
-                name,
-                email,
-                password: hashedPassword,
-            });
+            const values = { name: name, email: email, password: hashedPassword };
+            const newUser = new User_1.default();
+            Object.assign(newUser, values);
+            const user = usersRepository.create(newUser);
             yield usersRepository.save(user);
             return user;
         });
